@@ -1,20 +1,32 @@
-from load_data import load_market_data
-from analyze_data import calculate_statistics, calculate_daily_returns
-from visualize_data import plot_price_trend, plot_volume
+from fetch_data import fetch_stock_data
+from analyze_data import (
+    calculate_statistics,
+    calculate_daily_returns,
+    calculate_moving_averages,
+    calculate_volatility,
+)
+from visualize_data import (
+    plot_price_trend,
+    plot_volume,
+    plot_moving_averages,
+    plot_candlestick,
+)
 
 
 def main():
 
-    filepath = "../data/sample_stock_data.csv"
+    symbol = "AAPL"
 
-    # Load dataset
-    data = load_market_data(filepath)
+    print(f"\nFetching data for {symbol}...\n")
+
+    # Fetch market data
+    data = fetch_stock_data(symbol)
 
     # Calculate statistics
     stats = calculate_statistics(data)
 
-    print("\nMarket Statistics")
-    print("-----------------------")
+    print("Market Statistics")
+    print("------------------")
 
     for key, value in stats.items():
         print(f"{key}: {value}")
@@ -22,9 +34,21 @@ def main():
     # Calculate daily returns
     data = calculate_daily_returns(data)
 
-    # Visualizations
+    # Calculate moving averages
+    data = calculate_moving_averages(data)
+
+    # Calculate volatility
+    volatility = calculate_volatility(data)
+
+    print("\nMarket Volatility")
+    print("------------------")
+    print(volatility)
+
+    # Generate visualizations
     plot_price_trend(data)
     plot_volume(data)
+    plot_moving_averages(data)
+    plot_candlestick(data)
 
 
 if __name__ == "__main__":
